@@ -1,0 +1,41 @@
+
+{% extends 'shared/layout.html' %}
+
+<body>
+    <!-- Main Content Section -->
+    {% block maincontent %}
+        <!-- About me section -->
+        <section class="mohid">
+            <div class="left">
+                <img src="/static/main/images/me.jpg"
+                alt="Picture of Mohid"
+                loading="lazy"
+                width="300"
+                height="400">
+            </div>
+            <div class="right">
+                <h2>Mohid Imran</h2>
+                <p> is a Computer Science student at Michigan State University
+                    with a strong foundation in software engineering, cloud development, and business.
+                    Currently pursuing a Bachelor's degree in Computer Science, I am passionate about 
+                    utilizing my skills to solve complex challenges through cutting-edge technologies.
+                    As an AWS Software Engineer Intern at BigCommerce, I gained hands-on experience 
+                    delivering impactful integrations and automation tools. I contributed to improving 
+                    efficiency by 20% through the integration of services like Salesforce, Jira, and Workday
+                    using AWS Cloud Development Kit and Python. Additionally, my work in backend development 
+                    at Imagine Software, as well as my role as a Teaching Assistant, has honed my abilities 
+                    in Python, FastAPI, and working with databases like Firebase. I thrive in collaborative
+                    environments and take pride in leveraging my technical skills to create scalable, efficient,
+                    and innovative solutions. My experience spans various domains, including back-end development, 
+                    cloud solutions, and software automation. I am driven by the goal of transforming ideas into 
+                    reality and always eager to expand my knowledge in the ever-evolving tech landscape.
+                </p>
+            </div>
+        </section>
+
+        {% endblock %}
+
+    <!-- External JavaScript file -->
+    <script src="/static/main/js/nav.js"></script>
+</body>
+</html>
