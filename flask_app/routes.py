@@ -35,7 +35,6 @@ def getUser():
 def root():
 	return redirect('/home')
 
-
 @app.route('/home')
 def home():
     return render_template('home.html')

@@ -12,3 +12,39 @@
   <script src="{{ url_for('static', filename='main/js/main.js') }}" defer></script>
   {% block extrajs %}{% endblock %}
 </head>
+
+
+<body>
+    <article>
+    <!-- The navigation bar -->
+    <nav>
+     <div class="navbar">
+     </div>
+
+    </nav>
+
+    <!-- The main content  -->
+    <main>
+      {% block maincontent %}{% endblock %}
+
+    </main>
+    
+
+    <!-- The footer of the file -->
+    <footer>
+        <p>© 2025 Mohid Imran</p>
+    </footer>
+
+    </article>
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
