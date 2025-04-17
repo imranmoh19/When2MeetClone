@@ -1,0 +1,42 @@
+{% extends 'shared/layout.html' %}
+
+{% block extrajs %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='js/event.js') }}"></script>
+<script>
+  const eventId = "{{ event.event_id }}";
+</script>
+{% endblock %}
+
+{% block maincontent %}
+<h2>{{ event.name }}</h2>
+<p>{{ event.start_date }} – {{ event.end_date }}</p>
+
+<label for="availability-mode">Availability Mode:</label>
+<select id="availability-mode">
+  <option value="available">Available</option>
+  <option value="maybe">Maybe</option>
+  <option value="unavailable">Unavailable</option>
+</select>
+
+<table id="availability-grid">
+  <thead>
+    <tr>
+      <th>Time</th>
+      {% for date in date_list %}
+        <td class="slot" data-date="{{ date }}" data-time="{{ time }}"></td>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for time in time_slots %}
+      <tr>
+        <td>{{ time }}</td>
+        {% for date in date_list %}
+          <td class="slot" data-date="{{ date }}" data-time="{{ time }}"></td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

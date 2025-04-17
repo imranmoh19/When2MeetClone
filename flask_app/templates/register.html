@@ -10,19 +10,15 @@
     <!-- Main Content Section -->
     {% block maincontent %}
     <br><br>
-    <h1 class="login-title">Login</h1>
+    <h1 class="login-title">Register</h1>
     <hr />
     <div class="login-form">
-      <form id="login-form" action="{{ url_for('home') }}" >
+      <form id="login-form" action="{{ url_for('register') }}" >
           <input type="email" class="email-login" id="email-login" name="email" placeholder="Email">
     
           <input type="password" class="password-login" id="password-login" name="password" placeholder="Password" required>
     
-          <button type="submit" class="submit-login">Login</button>
-          <p class="account-info">Don't have an account?</p>
-          <br>
-          <p class="account-info">Click <strong>Register</strong> </p>
-          <button type="button" id="button-register" class="button-register" action="{{ url_for('register') }}">Register</button>
+          <button type="submit" id="button-register" class="button-register">Register</button>
         </form>
       <p id="login-message"></p> 
 

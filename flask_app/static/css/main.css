@@ -1,0 +1,154 @@
+
+
+.login-title {
+    justify-content: center; 
+    align-items: center;
+    margin: 3%;
+    font-size: 7vh;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+.email-login {
+    padding: 1.4vh;
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    margin: 3%;
+}
+
+.password-login {
+    padding: 1.4vh;
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    margin: 3%;
+
+}
+
+.submit-login {
+    padding: 1.4vh;
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    margin: 3%;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.submit-login:hover{
+    opacity: 0.8;
+}
+
+.button-register {
+    padding: 1.4vh;
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    margin: 3%;
+    background-color: rgb(84, 84, 247);
+    color: rgb(255, 255, 255);
+    font-size: medium;
+    font-weight: bold;    
+}
+
+.button-register:hover{
+    opacity: 0.8;
+}
+
+.login-form {
+    padding: 7vh;
+    justify-content: center; 
+    align-items: center; 
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20%;
+}
+
+.account-info {
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    font-size: large;
+}
+
+.event-buttons {
+    padding: 4vh;
+    justify-content: center; 
+    align-items: center; 
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10%;
+}
+
+
+.event-create {
+    padding: 1.4vh;
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    margin: 3%;
+    font-size: x-large;
+    font-weight: bold;
+    background-color: rgb(65, 189, 82);
+    color: rgb(255,255,255);
+    border: 0cap;
+}
+
+.event-create:hover {
+    opacity: 0.8;
+}
+
+.event-join {
+    padding: 1.4vh;
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    margin: 3%;
+    font-size: x-large;
+    font-weight: bold;
+    background-color: rgb(22, 107, 33);
+    color: rgb(255,255,255);
+    border: 0cap;
+}
+
+.event-join:hover {
+    opacity: 0.8;
+}
+
+#availability-mode {
+    margin-bottom: 10px;
+  }
+  
+  #availability-grid {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #availability-grid th,
+  #availability-grid td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    min-width: 80px;
+  }
+  
+  .available {
+    background-color: #d4edda; /* Green */
+  }
+  
+  .maybe {
+    background-color: #fff3cd; /* Yellow */
+  }
+  
+  .unavailable {
+    background-color: #f8d7da; /* Grey/Red */
+  }
+  
+  .slot {
+    cursor: pointer;
+    width: 80px;
+    height: 30px;
+    border: 1px solid #ccc;
+  }

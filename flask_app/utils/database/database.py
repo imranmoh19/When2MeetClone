@@ -91,7 +91,7 @@ class database:
             cnx.commit()
             print("Purged existing tables.")
 
-        essential_tables = ["users.sql"]
+        essential_tables = ["users.sql","events.sql","event_participants.sql","availability.sql"]
         executed_files = set()
 
         # Create essential tables first (positions before experiences)
@@ -240,5 +240,129 @@ class database:
             message = fernet.decrypt(message).decode()
 
         return message
+    
+#######################################################################################
+# EVENT RELATED
+#######################################################################################
+    def create_event(self, name, creator_email, start_date, end_date, start_time, end_time, invitees):
+        try:
+            cnx = mysql.connector.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                port=self.port,
+                database=self.database,
+                charset='utf8mb4'
+            )
+            cursor = cnx.cursor(dictionary=True)
+
+            # Insert event
+            insert_query = """
+                INSERT INTO events (name, creator_email, start_date, end_date, start_time, end_time)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """
+            cursor.execute(insert_query, (name, creator_email, start_date, end_date, start_time, end_time))
+            cnx.commit()
+
+            # Get the inserted ID
+            event_id = cursor.lastrowid
+            print("Inserted event with ID:", event_id)
+
+            # Add creator + invitees as participants
+            participants = [(event_id, creator_email)]
+            for email in invitees:
+                participants.append((event_id, email))
+
+            # Insert participants using your helper method
+            self.insertRows('event_participants', ['event_id', 'email'], participants)
+
+            return {'success': 1, 'event_id': event_id}
+        except Exception as e:
+            return {'success': 0, 'error': str(e)}
+        finally:
+            cursor.close()
+            cnx.close()
 
 
+    def get_event_by_id(self, event_id):
+        try:
+            event = self.query(
+                "SELECT * FROM events WHERE event_id = %s",
+                (event_id,)
+            )
+            if not event:
+                return None
+
+            participants = self.query(
+                "SELECT email FROM event_participants WHERE event_id = %s",
+                (event_id,)
+            )
+            event_data = event[0]
+            event_data['participants'] = [p['email'] for p in participants]
+            return event_data
+        except Exception as e:
+            print(f"Database error in get_event_by_id: {e}")
+            return None
+
+    def save_availability(self, event_id, email, availability_data):
+        """
+        Save or update a user's availability for an event.
+
+        Parameters:
+            event_id (int): The ID of the event.
+            email (str): The user's email.
+            availability_data (list of dict): Each dict contains:
+                {
+                    'date': 'YYYY-MM-DD',
+                    'time': 'HH:MM:SS',
+                    'status': 'Available' | 'Maybe' | 'Unavailable'
+                }
+        """
+        try:
+            cnx = mysql.connector.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                port=self.port,
+                database=self.database,
+                charset='utf8mb4'
+            )
+            cursor = cnx.cursor()
+
+            # Delete existing availability for this user/event (optional, for full overwrite)
+            cursor.execute("DELETE FROM availability WHERE event_id = %s AND email = %s", (event_id, email))
+
+            # Prepare insert statement
+            insert_query = """
+                INSERT INTO availability (event_id, email, date, time, status)
+                VALUES (%s, %s, %s, %s, %s)
+            """
+            values = [(event_id, email, row['date'], row['time'], row['status']) for row in availability_data]
+
+            # Insert all rows
+            cursor.executemany(insert_query, values)
+            cnx.commit()
+            return {'success': 1, 'message': f'Saved {cursor.rowcount} availability entries.'}
+
+        except Exception as e:
+            return {'success': 0, 'error': str(e)}
+        finally:
+            cursor.close()
+            cnx.close()
+
+    def get_availability(self, event_id, email):
+        """
+        Retrieve a user's availability for a specific event.
+
+        Returns:
+            List of dicts, each with 'date', 'time', 'status'.
+        """
+        try:
+            results = self.query(
+                "SELECT date, time, status FROM availability WHERE event_id = %s AND email = %s",
+                (event_id, email)
+            )
+            return results
+        except Exception as e:
+            print(f"Error fetching availability: {e}")
+            return []
