@@ -1,0 +1,28 @@
+{% extends 'shared/layout.html' %}
+
+{% block extrajs %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+{% block maincontent %}
+<h2 class="join-event-header">Join an Existing Event</h2>
+<div class="event-list-container">
+    {% if events %}
+        <ul class="event-list">
+            {% for event in events %}
+                <li class="event-item">
+                    <a href="{{ url_for('event_page', event_id=event.event_id) }}">
+                        <div class="event-card">
+                            <p class="event-desc"><strong>Event:</strong> {{ event.name }}</p>
+                            <p class="event-desc"><strong>Creator:</strong> {{ event.creator_email }}</p>
+                            <p class="event-desc"><strong>Dates:</strong> {{ event.start_date }} to {{ event.end_date }}</p>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-events-msg">You haven't been invited to any events yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -34,9 +34,10 @@ $(document).ready(function() {
   });
 });
 
-
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelector(".button-register").addEventListener("click", function () {
         window.location.href = "/register";
     });
 });
+
+

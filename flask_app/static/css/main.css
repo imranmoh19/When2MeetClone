@@ -117,38 +117,307 @@
     opacity: 0.8;
 }
 
-#availability-mode {
-    margin-bottom: 10px;
-  }
-  
-  #availability-grid {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #availability-grid th,
-  #availability-grid td {
-    border: 1px solid #ccc;
-    padding: 8px;
+
+.event-avaliable {
     text-align: center;
-    min-width: 80px;
-  }
-  
-  .available {
-    background-color: #d4edda; /* Green */
-  }
-  
-  .maybe {
-    background-color: #fff3cd; /* Yellow */
-  }
-  
-  .unavailable {
-    background-color: #f8d7da; /* Grey/Red */
-  }
-  
-  .slot {
+    margin-bottom: 2.74vh;
+    margin-top: 0.685vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-details {
+    padding: 2.054vh;
+    border-radius: 0.685vh;
+    margin-bottom: 4.11vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+}
+
+.event-desc {
+    margin: 0.685vh 0;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    font-size: large;
+}
+
+.event-naming {
+    font-family:'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    font-size: xx-large;
+    text-align: center;
+    margin-bottom: 2.74vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.74vh;
+}
+
+.mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 2.054vh;
+    margin-bottom: 2.74vh;
+}
+
+.mode-btn {
+    padding: 1.37vh 2.74vh;
+    border: 0.274vh solid #ccc;
+    border-radius: 0.685vh;
     cursor: pointer;
-    width: 80px;
-    height: 30px;
-    border: 1px solid #ccc;
-  }
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.mode-btn.available {
+    background-color: #a8e6a8;
+    border-color: #69c769;
+}
+
+.mode-btn.maybe {
+    background-color: #ffe066;
+    border-color: #d4b52e;
+}
+
+.mode-btn.unavailable {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+.mode-btn.selected {
+    transform: scale(1.05);
+    box-shadow: 0 0 0.685vh rgba(0, 0, 0, 0.2);
+}
+
+.availability-grid {
+    display: grid;
+    grid-template-columns: 13.70vh repeat(auto-fill, minmax(70vh, 1fr));
+    gap: 0.137vh;
+    border: 0.137vh solid #e0e0e0;
+    user-select: none;
+    overflow-x: auto;
+    padding-left: 13.70vh;
+    padding-right: 13.70vh;
+
+}
+
+.header-cell {
+    background-color: #f8f9fa;
+    padding: 1.37vh 0.685vh;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 0.137vh solid #e0e0e0;
+    min-width: 13.70vh;
+}
+
+.time-label {
+    background-color: #f8f9fa;
+    padding: 1.37vh 0.685vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: bold;
+    border-right: 0.137vh solid #e0e0e0;
+    padding-right: 2.054vh;
+}
+
+.grid-cell {
+    width: 100%;
+    height: 4.11vh;
+    background-color: #ffffff;
+    border: 0.137vh solid #e0e0e0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+
+.grid-cell.Available-2 {
+    background-color: #66bb6a;
+}
+
+.grid-cell.Available-3 {
+    background-color: #2e7d32;
+}
+
+
+.grid-cell.Available {
+    background-color: #a8e6a8;
+}
+
+.grid-cell.Maybe-3 {
+    background-color: #b49103;
+}
+
+.grid-cell.Maybe-2 {
+    background-color: #facc15;
+}
+
+.grid-cell.Maybe {
+    background-color: #f6e5a0;
+}
+
+.grid-cell.Unavailable-3 {
+    background-color: #9b9a9a;
+}
+
+.grid-cell.Unavailable-2 {
+    background-color: #cfcccc;
+}
+
+.grid-cell.Unavailable {
+    background-color: #ffffff;
+}
+
+.status-message {
+    text-align: center;
+    padding: 1.37vh;
+    margin-top: 2.74vh;
+    background-color: #e9f7fb;
+    border-radius: 0.685vh;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.status-message.show {
+    opacity: 1;
+}
+
+.save-button {
+    display: block;
+    margin: 2.74vh auto;
+    padding: 1.37vh 4.11vh;
+    background-color: #4CAF50;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.685vh;
+    font-size: 2.191vh;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+.event-container{
+    padding: 4vh;
+    justify-content: center; 
+    align-items: center; 
+    display: flex;
+    flex-direction: column;
+}
+
+.event-name,.start-date,.end-date,.start-time,.end-time,.emails-invite{
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    font-size: large;
+    padding: 1%;
+}
+
+.event-name-input,.start-date-input,.end-date-input,.start-time-input,.end-time-input,.email-invite-box{
+    padding: 1vh;
+    justify-content: center; 
+    align-items: center;
+    width: 30%;
+}
+
+.create-event{
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    font-size: xx-large;
+    padding-top: 1vh;
+}
+
+
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2vh;
+}
+
+.create-event-button {
+    padding: 2vh;
+    justify-content: center; 
+    align-items: center; 
+    background-color: #3da642;
+    color: #ffffff;
+    border-width: 0;
+    font-size: x-large;
+    font-weight: bold; 
+}
+
+.create-event-button:hover {
+    opacity: 0.8;
+}
+
+.join-event-header {
+    text-align: center;
+    margin-top: 3vh;
+    font-size: 2rem;
+    color: #333;
+}
+
+.event-list-container {
+    padding: 2vh 5vw;
+}
+
+.event-list {
+    list-style: none;
+    padding: 0;
+}
+
+.event-item {
+    margin-bottom: 2vh;
+}
+
+.event-card {
+    border: 0.137vh solid #ccc;
+    padding: 2vh;
+    border-radius: 1.095vh;
+    background-color: #f9f9f9;
+    transition: box-shadow 0.3s;
+    justify-content: center;
+    text-align: center;
+}
+
+
+.event-card:hover {
+    box-shadow: 0 0 1.37vh rgba(0,0,0,0.2);
+    background-color: #eef5ff;
+}
+
+.no-events-msg {
+    text-align: center;
+    color: #777;
+    font-size: 1.2rem;
+}
+
+
+.best-time-section {
+    margin: 2.74vh 0;
+    padding: 2.054vh;
+    border-radius: 0.685vh;
+    text-align: center;
+    justify-content: center;
+    font-size: large;
+}
+
+.best-time-section h3 {
+    margin-top: 0;
+    margin-bottom: 3%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: x-large;
+    text-decoration: underline;
+}
+
+.user-available {
+    font-weight: bold;
+}

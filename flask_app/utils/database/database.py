@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import pprint
 import mysql.connector
 import glob
@@ -244,6 +245,7 @@ class database:
 #######################################################################################
 # EVENT RELATED
 #######################################################################################
+
     def create_event(self, name, creator_email, start_date, end_date, start_time, end_time, invitees):
         try:
             cnx = mysql.connector.connect(
@@ -264,17 +266,47 @@ class database:
             cursor.execute(insert_query, (name, creator_email, start_date, end_date, start_time, end_time))
             cnx.commit()
 
-            # Get the inserted ID
             event_id = cursor.lastrowid
             print("Inserted event with ID:", event_id)
 
             # Add creator + invitees as participants
-            participants = [(event_id, creator_email)]
-            for email in invitees:
-                participants.append((event_id, email))
-
-            # Insert participants using your helper method
+            participants = [(event_id, creator_email)] + [(event_id, email) for email in invitees]
             self.insertRows('event_participants', ['event_id', 'email'], participants)
+
+            # Insert into event_invitees (just invitees)
+            invitee_rows = [(event_id, email) for email in invitees]
+            self.insertRows('event_invitees', ['event_id', 'email'], invitee_rows)
+
+            # ========== NEW: Pre-fill Unavailable availability ==========
+
+            availability_rows = []
+            all_emails = [creator_email] + invitees
+
+            start_time_obj = datetime.strptime(start_time, "%H:%M").time()
+            end_time_obj = datetime.strptime(end_time, "%H:%M").time()
+
+            current_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+            end_date_obj = datetime.strptime(end_date, "%Y-%m-%d").date()
+
+            while current_date <= end_date_obj:
+                current_time = start_time_obj
+                while current_time < end_time_obj:
+                    for email in all_emails:
+                        availability_rows.append((
+                            event_id,
+                            email,
+                            current_date,
+                            current_time,
+                            "Unavailable"
+                        ))
+                    # Increment time by 30 minutes
+                    dt = datetime(2000, 1, 1, current_time.hour, current_time.minute) + timedelta(minutes=30)
+                    current_time = dt.time()
+                current_date += timedelta(days=1)
+
+            self.insertRows('availability', ['event_id', 'email', 'date', 'time', 'status'], availability_rows)
+
+            # ========== END ==========
 
             return {'success': 1, 'event_id': event_id}
         except Exception as e:
@@ -284,24 +316,47 @@ class database:
             cnx.close()
 
 
+    def get_invited_events(self, user_email):
+        try:
+            query = """
+                SELECT e.event_id, e.name, e.creator_email, e.start_date, e.end_date
+                FROM events e
+                JOIN event_participants ep ON e.event_id = ep.event_id
+                WHERE ep.email = %s
+            """
+            results = self.query(query, (user_email,))
+            return results
+        except Exception as e:
+            print("Error fetching invited events:", e)
+            return []
+
+
     def get_event_by_id(self, event_id):
         try:
-            event = self.query(
-                "SELECT * FROM events WHERE event_id = %s",
-                (event_id,)
-            )
-            if not event:
+            # Get the main event info
+            event_query = """
+                SELECT event_id, name, creator_email, start_date, end_date, start_time, end_time
+                FROM events
+                WHERE event_id = %s
+            """
+            event_result = self.query(event_query, (event_id,))
+            if not event_result:
                 return None
+            event = event_result[0]
 
-            participants = self.query(
-                "SELECT email FROM event_participants WHERE event_id = %s",
-                (event_id,)
-            )
-            event_data = event[0]
-            event_data['participants'] = [p['email'] for p in participants]
-            return event_data
+            # Get invitee emails
+            invitee_query = """
+                SELECT email FROM event_invitees WHERE event_id = %s
+            """
+            invitees_result = self.query(invitee_query, (event_id,))
+            invitees = [row['email'] for row in invitees_result]
+
+            # Add invitees to event dict
+            event['invitees'] = invitees
+
+            return event
         except Exception as e:
-            print(f"Database error in get_event_by_id: {e}")
+            print("Error in get_event_by_id:", e)
             return None
 
     def save_availability(self, event_id, email, availability_data):
@@ -337,6 +392,9 @@ class database:
                 INSERT INTO availability (event_id, email, date, time, status)
                 VALUES (%s, %s, %s, %s, %s)
             """
+            for row in availability_data:
+                row['time'] = datetime.strptime(row['time'], '%H:%M:%S').time()
+                
             values = [(event_id, email, row['date'], row['time'], row['status']) for row in availability_data]
 
             # Insert all rows
@@ -365,4 +423,21 @@ class database:
             return results
         except Exception as e:
             print(f"Error fetching availability: {e}")
+            return []
+    
+    def get_group_availability(self, event_id):
+        query = """
+            SELECT date, time, 
+                SUM(status = 'Available') AS available_count,
+                SUM(status = 'Maybe') AS maybe_count,
+                SUM(status = 'Unavailable') AS unavailable_count
+            FROM availability
+            WHERE event_id = %s
+            GROUP BY date, time
+            ORDER BY date, time
+        """
+        try:
+            return self.query(query, (event_id,))
+        except Exception as e:
+            print(f"Error fetching group availability: {e}")
             return []

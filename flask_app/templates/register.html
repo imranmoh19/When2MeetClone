@@ -1,28 +1,22 @@
-
+<!-- Register Form in HTML -->
 {% extends 'shared/layout.html' %}
 
 {% block extrajs %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
 {% endblock %}
 
-<body>
-    <!-- Main Content Section -->
-    {% block maincontent %}
-    <br><br>
-    <h1 class="login-title">Register</h1>
-    <hr />
-    <div class="login-form">
-      <form id="login-form" action="{{ url_for('register') }}" >
-          <input type="email" class="email-login" id="email-login" name="email" placeholder="Email">
-    
-          <input type="password" class="password-login" id="password-login" name="password" placeholder="Password" required>
-    
-          <button type="submit" id="button-register" class="button-register">Register</button>
-        </form>
-      <p id="login-message"></p> 
+{% block maincontent %}
+<br><br>
+<h1 class="login-title">Register</h1>
+<hr />
+<div class="login-form">
+  <form id="register-form" action="{{ url_for('register') }}" method="POST">
+    <input type="email" class="email-login" id="email-login" name="email" placeholder="Email" title="Email" required>
+    <input type="password" class="password-login" id="password-login" name="password" placeholder="Password" title="Password" required>
+    <button type="submit" id="complete-register" class="button-register">Register</button>
+  </form>
+  <p id="register-message"></p>
+</div>
 
-    {% endblock %}
-
-</body>
-</html>
+{% endblock %}

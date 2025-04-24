@@ -8,27 +8,29 @@
 <body>
     <!-- Main Content Section -->
     {% block maincontent %}
-    <h2>Create a New Event</h2>
-    <form action="{{ url_for('process_event_create') }}" method="POST">
-        <label>Event Name:</label><br>
-        <input type="text" name="event_name" required><br><br>
+    <h2 class="create-event">Create a New Event</h2>
+    <form class="event-container" action="{{ url_for('process_event_create') }}" method="POST">
+        <p class="event-name">Event Name:</p>
+        <input class="event-name-input" type="text" name="event_name" title="Event Name" required>
 
-        <label>Start Date:</label><br>
-        <input type="date" name="start_date" required><br><br>
+        <p class="start-date">Start Date:</p>
+        <input class="start-date-input" type="date" name="start_date" title="Start Date" required>
 
-        <label>End Date:</label><br>
-        <input type="date" name="end_date" required><br><br>
+        <p class="end-date">End Date:</p>
+        <input class="end-date-input" type="date" name="end_date" title="End Date" required>
 
-        <label>Daily Start Time:</label><br>
-        <input type="time" name="start_time" required><br><br>
+        <p class="start-time">Daily Start Time:</p>
+        <input class="start-time-input" type="time" name="start_time" title="Daily Start Time" required>
 
-        <label>Daily End Time:</label><br>
-        <input type="time" name="end_time" required><br><br>
+        <p class="end-time">Daily End Time:</p>
+        <input class="end-time-input" type="time" name="end_time" title="Daily End Time" required>
 
-        <label>Invitee Emails (comma-separated):</label><br>
-        <textarea name="invitees" rows="3" cols="40" required></textarea><br><br>
+        <p class="emails-invite">Invitee Emails (comma-separated):</p>
+        <textarea class="emails-invite-box" name="invitees" rows="3" cols="40" required></textarea><br>
 
-        <button type="submit">Create Event</button>
+        <div class="button-wrapper">
+            <button class="create-event-button" type="submit">Create Event</button>
+        </div>
     </form>
     {% endblock %}
 

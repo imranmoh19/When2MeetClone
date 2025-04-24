@@ -22,7 +22,6 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    
 }
 
 /* Nav links adjusting */
@@ -31,6 +30,8 @@
     color: white;
     font-size: 1.1rem;
     transition: opacity 0.3s ease-in-out;
+    padding-right: 4.80vh;
+
 }
 
 /* Opacity effect on hover */
